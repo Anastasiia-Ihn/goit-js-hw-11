@@ -1,28 +1,18 @@
 import axios from "axios";
 import Notiflix from 'notiflix';
-import {pagination} from './pagination'
 
-const currPage = pagination.getCurrentPage();
 const searchForm = document.querySelector('.search-form')
 const gallery = document.querySelector('.gallery')
+const loadMore = document.querySelector('.load-more')
 const backdropEl = document.querySelector('.backdrop')
 const modalEl = document.querySelector('.modal')
 let valueInput = '';
 
 const BASE_URL = 'https://pixabay.com/api/'
 
-searchForm.addEventListener('submit', handlerClickOnForm)
 
- function handlerClickOnForm(evt) {
-    evt.preventDefault();
-    // gallery.innerHTML='';
-  valueInput = evt.target.elements[0].value;
-    
-// fetchCards(currentPage,valueInput)
-  renderFirstPage(currPage, valueInput);
-}
 
-async function fetchCards(currPage,valueInput) {
+async function fetchCards(currPage='1',valueInput) {
 
    const params = new URLSearchParams({
     key: '39154877-9df82b17a56e0efc5c16aca53',
@@ -35,7 +25,7 @@ async function fetchCards(currPage,valueInput) {
       });
 
         // const resp = axios.get(`${BASE_URL}?${params}`)
- return await axios.get(`${BASE_URL}?${params}`)
+  return await axios.get(`${BASE_URL}?${params}`)
     .then((resp) => { return resp })
     .catch((_) => Notiflix.Notify.warning('Sorry, there are no images matching your search query. Please try again.'))
 };
@@ -75,16 +65,19 @@ function creatMarkupInList(arr){
           <b>Downloads:</b>${downloads || '-'}
         </p>
       </div>
-    </div>`).join('');
-   gallery.innerHTML = markup;
-    }
-
-pagination.on('afterMove', (event) => {
-  console.log(object);
-    const currentPage = event.page;
-    renderEvt(currentPage)
-});    
+    </div>`).join('')}
 
 
 
 
+
+searchForm.addEventListener('submit', handlerClickOnForm)
+
+ function handlerClickOnForm(evt) {
+    evt.preventDefault();
+    // gallery.innerHTML='';
+  valueInput = evt.target.elements[0].value;
+    
+// fetchCards(currentPage,valueInput)
+  renderFirstPage(currPage, valueInput);
+}
