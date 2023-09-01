@@ -1,19 +1,31 @@
 import axios from "axios";
 import Notiflix from 'notiflix';
+import {pagination} from './pagination'
 
 const axios = require('axios');
+const currPage = pagination.getCurrentPage();
 const searchForm = document.querySelector('.search-form')
 const gallery = document.querySelector('.gallery')
+// const loadMore = document.querySelector('.load-more')
+const backdropEl = document.querySelector('.backdrop')
+const modalEl = document.querySelector('.modal')
+let valueInput = '';
+
 const BASE_URL = 'https://pixabay.com/api/'
 
 searchForm.addEventListener('submit', handlerClickOnForm)
 
-function handlerClickOnForm(evt, currentPage) {
+function handlerClickOnForm(evt) {
     evt.preventDefault();
-    gallery.innerHTML='';
-    const valueInput = evt.target.elements[0].value;
+    // gallery.innerHTML='';
+  valueInput = evt.target.elements[0].value;
+    
+// fetchCards(currentPage,valueInput)
+renderFirstPage(currPage, valueInput)
 
-    async function findCards() {
+}
+
+async function fetchCards(currPage,valueInput) {
 
    const params = new URLSearchParams({
     key: '39154877-9df82b17a56e0efc5c16aca53',
@@ -21,25 +33,36 @@ function handlerClickOnForm(evt, currentPage) {
     image_type: 'photo',
     orientation: 'horizontal',
     safesearch: true,
-    page: currentPage,
+    page: currPage,
     per_page: 40,
       });
 
         // const resp = axios.get(`${BASE_URL}?${params}`)
-        await axios.get(`${BASE_URL}?${params}`).then((resp)=> {
-            gallery.insertAdjacentHTML('beforeend',creatMarkupInList(resp.data.hits ))
-        }
+  await axios.get(`${BASE_URL}?${params}`)
+    .then((resp) => { return resp })
+    .catch((_) => Notiflix.Notify.warning('Sorry, there are no images matching your search query. Please try again.'))
+};
+renderFirstPage(currPage,valueInput)
 
-        ).catch((_)=> Notiflix.Notify.warning('"Sorry, there are no images matching your search query. Please try again."'))
+function renderFirstPage(currPage, valueInput) {
+ 
+  fetchCards(currPage, valueInput).then((data) => {
+    Notiflix.Notify.success(`Hooray! We found ${data.data.totalHits} images.`);
+    creatMarkupInList(data.data.hits);
+    pagination.reset(data.data.totalHits);
+  }).catch((_) => Notiflix.Notify.warning('Sorry, there are no images matching your search query. Please try again.'))
+  
+}
 
-
-              }
-findCards()
-
+function renderEvt(currPage, valueInput) {
+ 
+  fetchCards(currPage, valueInput).then((data) => creatMarkupInList(data.data.hits))
+  .catch ((_) => Notiflix.Notify.warning('Sorry, there are no images matching your search query. Please try again.'))
+  
 }
 
 function creatMarkupInList(arr){
-  return arr.map(({webformatURL, largeImageURL, tags, likes, views, comments, downloads})=>  `<div class="photo-card">
+  const markup = arr.map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => `<div class="photo-card">
       <img class='img-card'src="${webformatURL}" alt="${tags}" loading="lazy" />
       <div class="info">
         <p class="info-item">
@@ -55,10 +78,14 @@ function creatMarkupInList(arr){
           <b>Downloads:</b>${downloads || '-'}
         </p>
       </div>
-    </div>`).join('')
+    </div>`).join('');
+   gallery.innerHTML = markup;
     }
 
-    // gallery.innerHTML =
+pagination.on('afterMove', (event) => {
+    const currentPage = event.page;
+    renderEvt(currentPage)
+});    
 
 
 
