@@ -2,7 +2,6 @@ import axios from "axios";
 import Notiflix from 'notiflix';
 import {pagination} from './pagination'
 
-const axios = require('axios');
 const currPage = pagination.getCurrentPage();
 const searchForm = document.querySelector('.search-form')
 const gallery = document.querySelector('.gallery')
@@ -15,14 +14,13 @@ const BASE_URL = 'https://pixabay.com/api/'
 
 searchForm.addEventListener('submit', handlerClickOnForm)
 
-function handlerClickOnForm(evt) {
+async function handlerClickOnForm(evt) {
     evt.preventDefault();
     // gallery.innerHTML='';
   valueInput = evt.target.elements[0].value;
     
 // fetchCards(currentPage,valueInput)
-renderFirstPage(currPage, valueInput)
-
+ await renderFirstPage(currPage, valueInput);
 }
 
 async function fetchCards(currPage,valueInput) {
