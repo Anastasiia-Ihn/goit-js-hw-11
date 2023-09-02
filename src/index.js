@@ -4,7 +4,7 @@ import Notiflix from 'notiflix';
 import { pagination } from './pagination';
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
-import './css/style.css'
+// import './css/style.css'
 const BASE_URL = 'https://pixabay.com/api/'
 
 const currPage = pagination.getCurrentPage();
@@ -24,13 +24,21 @@ searchForm.addEventListener('submit', handlerClickOnForm)
 function handlerClickOnForm(evt) {
     evt.preventDefault();//відміна перезагруж сторінки
     // gallery.innerHTML=''; // зачистка при новому пошуку
-  valueInput = evt.target.elements[0].value; // те що ввів клієнт
-    
-  renderFirstPage(currPage, valueInput); //  запит на API
-  lightbox.refresh();
-  valueInput = "";// очищення рядка вводу
+   valueInput = evt.target.elements[0].value; // те що ввів клієнт
+renderFirstPage(currPage, valueInput); //  запит на API
+  // valueInput = "";// очищення рядка вводу
   tuiPagination.classList.remove('is-hidden')// вкл пагінацію 
 
+
+   //   if (valueInput = '') {
+//     return Notiflix.Notify.warning('Sorry, You need to write word. Please try again.')
+
+//   }else{
+     
+//   renderFirstPage(currPage, valueInput); //  запит на API
+//   // valueInput = "";// очищення рядка вводу
+//   tuiPagination.classList.remove('is-hidden')// вкл пагінацію 
+// }
 }
 
 //ств запиту на api
@@ -97,7 +105,9 @@ function creatMarkupInList(arr){
       </div>
       </a>
     </div>`).join('');
-   gallery.innerHTML = markup;
+  gallery.innerHTML = markup;
+  
+  lightbox.refresh();
     }
 //активізація пагінації наступних стрінок
 pagination.on('afterMove', (event) => {
