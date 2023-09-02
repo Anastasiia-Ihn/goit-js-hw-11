@@ -1,9 +1,10 @@
 import axios from "axios";
+// import {fetchCards} from './fetchAPI'
 import Notiflix from 'notiflix';
 import { pagination } from './pagination';
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
-
+import './css/style.css'
 const BASE_URL = 'https://pixabay.com/api/'
 
 const currPage = pagination.getCurrentPage();
@@ -12,6 +13,9 @@ const gallery = document.querySelector('.gallery')
 const tuiPagination = document.querySelector('.tui-pagination')
 let valueInput = '';
 
+let lightbox = new SimpleLightbox('.gallery a');
+
+
 tuiPagination.classList.add('is-hidden')// ховаємо пагінацію 
 
 // слухач подій на запит по слову
@@ -19,10 +23,11 @@ searchForm.addEventListener('submit', handlerClickOnForm)
 
 function handlerClickOnForm(evt) {
     evt.preventDefault();//відміна перезагруж сторінки
-    gallery.innerHTML=''; // зачистка при новому пошуку
+    // gallery.innerHTML=''; // зачистка при новому пошуку
   valueInput = evt.target.elements[0].value; // те що ввів клієнт
     
   renderFirstPage(currPage, valueInput); //  запит на API
+  lightbox.refresh();
   valueInput = "";// очищення рядка вводу
   tuiPagination.classList.remove('is-hidden')// вкл пагінацію 
 
@@ -59,6 +64,7 @@ function renderFirstPage(currPage, valueInput) {
 
     creatMarkupInList(data.data.hits);// відмальовка списку даних з запиту
     pagination.reset(data.data.totalHits); // підключення пагінації(к-сть сторінок)
+   
   }).catch((_) => Notiflix.Notify.warning('Sorry, there are no images matching your search query. Please try again.'))
   
 }
@@ -101,18 +107,18 @@ pagination.on('afterMove', (event) => {
 
 
 // підключення галереї 
-gallery.addEventListener('click', handlerClickCard)
+// gallery.addEventListener('click', handlerClickCard)
 
-let lightbox = new SimpleLightbox('.gallery a');
+// // let lightbox = new SimpleLightbox('.gallery a');
 
-function handlerClickCard(evt) { 
-    evt.preventDefault()   
-  console.log(evt.target.classList.value);
-if (evt.target.classList.value !== 'img-card') {
-  return 
-    } 
-    // виклик галереї
-    lightbox.on('show.simplelightbox')
-    // зачистка слухача
-    gallery.removeEventListener('click', handlerClickCard)
-}
+// function handlerClickCard(evt) { 
+//     evt.preventDefault()   
+//   console.log(evt.target.classList.value);
+// if (evt.target.classList.value !== 'img-card') {
+//   return 
+//     } 
+//     // виклик галереї
+//     lightbox.on('show.simplelightbox')
+//     // зачистка слухача
+//     gallery.removeEventListener('click', handlerClickCard)
+// }

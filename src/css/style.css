@@ -19,7 +19,7 @@
   font-size: 12;
 }
 .photo-card {
-  width: calc((100% - 24px * 3) / 4);
+  width: calc((100% - 15px * 3) / 4);
 }
 
 .img-card {
