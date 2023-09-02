@@ -1,28 +1,34 @@
 import axios from "axios";
 import Notiflix from 'notiflix';
-import {pagination} from './pagination'
+import { pagination } from './pagination';
+import SimpleLightbox from "simplelightbox";
+import "simplelightbox/dist/simple-lightbox.min.css";
+
+const BASE_URL = 'https://pixabay.com/api/'
 
 const currPage = pagination.getCurrentPage();
 const searchForm = document.querySelector('.search-form')
 const gallery = document.querySelector('.gallery')
-const backdropEl = document.querySelector('.backdrop')
-const modalEl = document.querySelector('.modal')
+const tuiPagination = document.querySelector('.tui-pagination')
 let valueInput = '';
 
-const BASE_URL = 'https://pixabay.com/api/'
+// ховаємо пагінацію 
+tuiPagination.classList.add('is-hidden')
 
+// слухач подій на запит по слову
 searchForm.addEventListener('submit', handlerClickOnForm)
 
- function handlerClickOnForm(evt) {
+function handlerClickOnForm(evt) {
     evt.preventDefault();
     // gallery.innerHTML='';
-  valueInput = evt.target.elements[0].value;
+  valueInput = evt.target.elements[0].value; // те що ввів клієнт
     
-// fetchCards(currentPage,valueInput)
-  renderFirstPage(currPage, valueInput);
+  renderFirstPage(currPage, valueInput); //  запит на API
+  valueInput = "";
 }
 
-async function fetchCards(currPage,valueInput) {
+//ств запиту на api
+async function fetchCards(currPage, valueInput) {
 
    const params = new URLSearchParams({
     key: '39154877-9df82b17a56e0efc5c16aca53',
@@ -34,33 +40,40 @@ async function fetchCards(currPage,valueInput) {
     per_page: 40,
       });
 
-        // const resp = axios.get(`${BASE_URL}?${params}`)
  return await axios.get(`${BASE_URL}?${params}`)
     .then((resp) => { return resp })
     .catch((_) => Notiflix.Notify.warning('Sorry, there are no images matching your search query. Please try again.'))
 };
-renderFirstPage(currPage,valueInput)
 
+//ств запиту на основі ф-ї fetchCards
 function renderFirstPage(currPage, valueInput) {
  
   fetchCards(currPage, valueInput).then((data) => {
-    Notiflix.Notify.success(`Hooray! We found ${data.data.totalHits} images.`);
-    creatMarkupInList(data.data.hits);
-    pagination.reset(data.data.totalHits);
+    if (data.data.totalHits >= 1) {
+      Notiflix.Notify.success(`Hooray! We found ${data.data.totalHits} images.`);
+
+    } else {
+      Notiflix.Notify.warning('Sorry, there are no images matching your search query. Please try again.')
+    }
+
+    creatMarkupInList(data.data.hits);// відмальовка списку даних з запиту
+    pagination.reset(data.data.totalHits); // підключення пагінації(к-сть сторінок)
   }).catch((_) => Notiflix.Notify.warning('Sorry, there are no images matching your search query. Please try again.'))
   
 }
-
+// запит на api(ств інших строрінок)
 function renderEvt(currPage, valueInput) {
  
   fetchCards(currPage, valueInput).then((data) => creatMarkupInList(data.data.hits))
   .catch ((_) => Notiflix.Notify.warning('Sorry, there are no images matching your search query. Please try again.'))
   
 }
-
+// ств розмітки на елемент
 function creatMarkupInList(arr){
-  const markup = arr.map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => `<div class="photo-card">
-      <img class='img-card'src="${webformatURL}" alt="${tags}" loading="lazy" />
+  const markup = arr.map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) =>
+    ` <a class="gallery_link" href="${largeImageURL}"><div class="photo-card">
+ 
+  <img class='img-card'src="${webformatURL}" alt="${tags}" loading="lazy" />
       <div class="info">
         <p class="info-item">
           <b>Likes:</b>${likes || '-'}
@@ -75,16 +88,30 @@ function creatMarkupInList(arr){
           <b>Downloads:</b>${downloads || '-'}
         </p>
       </div>
+      </a>
     </div>`).join('');
    gallery.innerHTML = markup;
     }
-
+//активізація пагінації наступних стрінок
 pagination.on('afterMove', (event) => {
-  console.log(object);
     const currentPage = event.page;
-    renderEvt(currentPage)
+    renderEvt(currentPage, valueInput)
 });    
 
 
+// підключення галереї 
+gallery.addEventListener('click', handlerClickCard)
 
+let lightbox = new SimpleLightbox('.gallery a');
 
+function handlerClickCard(evt) { 
+    evt.preventDefault()   
+  console.log(evt.target.classList.value);
+if (evt.target.classList.value !== 'img-card') {
+  return 
+    } 
+    // виклик галереї
+    lightbox.on('show.simplelightbox')
+    // зачистка слухача
+    gallery.removeEventListener('click', handlerClickCard)
+}
