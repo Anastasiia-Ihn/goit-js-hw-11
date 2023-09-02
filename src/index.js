@@ -12,19 +12,20 @@ const gallery = document.querySelector('.gallery')
 const tuiPagination = document.querySelector('.tui-pagination')
 let valueInput = '';
 
-// ховаємо пагінацію 
-tuiPagination.classList.add('is-hidden')
+tuiPagination.classList.add('is-hidden')// ховаємо пагінацію 
 
 // слухач подій на запит по слову
 searchForm.addEventListener('submit', handlerClickOnForm)
 
 function handlerClickOnForm(evt) {
-    evt.preventDefault();
-    // gallery.innerHTML='';
+    evt.preventDefault();//відміна перезагруж сторінки
+    gallery.innerHTML=''; // зачистка при новому пошуку
   valueInput = evt.target.elements[0].value; // те що ввів клієнт
     
   renderFirstPage(currPage, valueInput); //  запит на API
-  valueInput = "";
+  valueInput = "";// очищення рядка вводу
+  tuiPagination.classList.remove('is-hidden')// вкл пагінацію 
+
 }
 
 //ств запиту на api
