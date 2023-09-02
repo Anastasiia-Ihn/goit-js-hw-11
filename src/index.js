@@ -4,7 +4,7 @@ import Notiflix from 'notiflix';
 import { pagination } from './pagination';
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
-// import './css/style.css'
+import './css/style.css'
 const BASE_URL = 'https://pixabay.com/api/'
 
 const currPage = pagination.getCurrentPage();
