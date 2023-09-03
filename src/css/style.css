@@ -11,6 +11,12 @@
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
 }
 
+.fixed-form {
+  position: fixed;
+  top: 0;
+  width: 1158px;
+}
+
 .input {
   margin-left: auto;
   margin-right: auto;
@@ -38,7 +44,7 @@
   column-gap: 10px;
   row-gap: 10px;
   flex-wrap: wrap;
-  margin: 30px 0;
+  margin: 100px 0 50px 0;
   justify-content: center;
 }
 
@@ -78,4 +84,24 @@ a:hover {
 
 .is-hidden {
   display: none;
+}
+
+.load-more-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.load-more {
+  text-align: center;
+  text-transform: uppercase;
+  margin-bottom: 50px;
+  padding: 11px 24px;
+
+  color: #f2faf8;
+  background-color: #175f52;
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 0.04em;
+  border-radius: 4px;
 }

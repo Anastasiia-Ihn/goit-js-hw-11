@@ -16,6 +16,11 @@ let currPage = 1;
 let valueInput = '';
 let lightbox = new SimpleLightbox('.gallery a');
 
+// let page = 1;
+const perPage = 40;
+// Оголосіть змінну, яка вказує, чи є ще елементи для завантаження.
+let moreElementsAvailable = true;
+
 loadMore.classList.add('is-hidden')
 
 // слухач подій на запит по слову
@@ -39,19 +44,29 @@ async function fetchCards(currPage = '1', valueInput) {
 
 function handlerClickOnForm(evt) {
     evt.preventDefault();//відміна перезагру сторінки
-    // gallery.innerHTML=''; // зачистка при новому пошуку
+    gallery.innerHTML=''; // зачистка при новому пошуку
   valueInput = evt.target.elements[0].value; // те що ввів клієнт
  
-  // fetchCards(currPage, valueInput); //  запит на API
-   fetchCards(currPage, valueInput).then((dataResp) => {
+ //  запит на API
+   aaaa(currPage, valueInput)
+}
+
+
+function aaaa() {
+  fetchCards(currPage, valueInput).then((dataResp) => {
     console.log(currPage);
     if (dataResp.data.totalHits >= 1) {
       Notiflix.Notify.success(`Hooray! We found ${dataResp.data.totalHits} images.`);
       
-      gallery.insertAdjacentHTML('beforeend', creatMarkupInList(dataResp.data.hits));
+      gallery.insertAdjacentHTML('beforeend', createMarkupInList(dataResp.data.hits));
+      lightbox.refresh();
 
-       loadMore.classList.remove('is-hidden')
-        lightbox.refresh();
+      loadMore.classList.remove('is-hidden')
+
+      if (dataResp.data.totalHits<=perPage) {
+        loadMore.classList.add('is-hidden')
+      }
+       
   
     } else {
       Notiflix.Notify.warning('Sorry, there are no images matching your search query. Please try again.')
@@ -60,34 +75,33 @@ function handlerClickOnForm(evt) {
     .catch((_) => Notiflix.Notify.warning('Sorry, there are no images matching your search query. Please try again.'))
 }
 
-
-
-let page = 1;
-
 loadMore.addEventListener("click", handlerLoadMore);
 
-function handlerLoadMore() {
-  page += 1;
-  fetchCards(page, valueInput).then((dataResp) => {
-    console.log(dataResp.data.hits.length);
-    console.log(dataResp.data.totalHits);
-    gallery.insertAdjacentHTML('beforeend', creatMarkupInList(dataResp.data.hits));
-    // lightbox.refresh();
-    
-     // знімаємо  клас is-hidden коли якась к-сть ел є на сторінкі до макс
-   if (dataResp.data.hits.length) {
-        loadMore.classList.remove('is-hidden')
-      }
-      else { loadMore.classList.add('is-hidden') }
+ function handlerLoadMore() {
+
+   fetchCards(currPage, valueInput).then((dataResp) => {
+
+    console.log(currPage);
+    console.log(dataResp);//нові елементи ? але приходять повторно перші 40
+    console.log(dataResp.data.hits.length);//довжина нових елементів
+    if (dataResp.data.hits.length) {
+      gallery.insertAdjacentHTML('beforeend', createMarkupInList(dataResp.data.hits));
+    lightbox.refresh();
+              currPage += 1;
+      if (perPage > dataResp.data.hits.length) {
+        moreElementsAvailable = false;
+      } 
+
+      if (!moreElementsAvailable) {loadMore.classList.add('is-hidden') }
+    } 
   })
-    
 }
 
 
 const defaults={
 URL: 'http://www.palmares.lemondeduchiffre.fr/images/joomlart/demo/default.jpg'
 }
-function creatMarkupInList(arr) {
+function createMarkupInList(arr) {
   return arr.map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) =>
     `<a class="gallery_link" href="${largeImageURL || defaults.URL}"><div class="photo-card">
       <img class='img-card'src="${webformatURL || defaults.URL}" alt="${tags}" loading="lazy" height= '200px'/>

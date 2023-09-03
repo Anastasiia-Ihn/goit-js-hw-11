@@ -10,24 +10,27 @@
   </head>
   <body>
     <div class="container">
-      <form class="search-form" id="search-form">
-        <input
-          class="input"
-          type="text"
-          name="searchQuery"
-          autocomplete="off"
-          placeholder="Search images..."
-        />
-        <button class="button" type="submit">Search</button>
-      </form>
+      <div class="fixed-form" id="">
+        <form class="search-form" id="search-form">
+          <input
+            class="input"
+            type="text"
+            name="searchQuery"
+            autocomplete="off"
+            placeholder="Search images..."
+          />
+          <button class="button" type="submit">Search</button>
+        </form>
+      </div>
 
       <div class="gallery">
         <!-- Картки зображень -->
       </div>
       <!-- для файлу index.js -->
       <!-- <div id="pagination" class="tui-pagination"></div> -->
-
-      <button type="button" class="load-more">Load more</button>
+      <div class="load-more-container">
+        <button type="button" class="load-more">Load more</button>
+      </div>
     </div>
   </body>
 </html>
