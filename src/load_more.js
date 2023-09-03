@@ -44,7 +44,7 @@ function handlerClickOnForm(evt) {
  
   // fetchCards(currPage, valueInput); //  запит на API
    fetchCards(currPage, valueInput).then((dataResp) => {
-    console.log(dataResp);
+    console.log(currPage);
     if (dataResp.data.totalHits >= 1) {
       Notiflix.Notify.success(`Hooray! We found ${dataResp.data.totalHits} images.`);
       
@@ -52,13 +52,6 @@ function handlerClickOnForm(evt) {
 
        loadMore.classList.remove('is-hidden')
         lightbox.refresh();
-
-      // знімаємо  клас is-hidden коли якась к-сть ел є на сторінкі до макс
-      // if (dataResp.data.hits.length <= dataResp.data.totalHits) {
-      //   loadMore.classList.remove('is-hidden')
-      // }
-      // else { loadMore.classList.add('is-hidden') }
-      
   
     } else {
       Notiflix.Notify.warning('Sorry, there are no images matching your search query. Please try again.')
@@ -76,17 +69,18 @@ loadMore.addEventListener("click", handlerLoadMore);
 function handlerLoadMore() {
   page += 1;
   fetchCards(page, valueInput).then((dataResp) => {
-    console.log(dataResp);
-    console.log(page);
-        gallery.insertAdjacentHTML('beforeend', creatMarkupInList(dataResp.data.hits));
-      lightbox.refresh();
+    console.log(dataResp.data.hits.length);
+    console.log(dataResp.data.totalHits);
+    gallery.insertAdjacentHTML('beforeend', creatMarkupInList(dataResp.data.hits));
+    // lightbox.refresh();
     
-  })
-  // знімаємо  клас is-hidden коли якась к-сть ел є на сторінкі до макс
-      if (dataResp.data.hits.length <= dataResp.data.totalHits) {
+     // знімаємо  клас is-hidden коли якась к-сть ел є на сторінкі до макс
+   if (dataResp.data.hits.length) {
         loadMore.classList.remove('is-hidden')
       }
       else { loadMore.classList.add('is-hidden') }
+  })
+    
 }
 
 
