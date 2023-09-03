@@ -35,33 +35,45 @@
 
 .gallery {
   display: flex;
-  column-gap: 15px;
-  row-gap: 15px;
+  column-gap: 10px;
+  row-gap: 10px;
   flex-wrap: wrap;
   margin: 30px 0;
   justify-content: center;
 }
 
 a {
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
   text-decoration: none;
+  transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+a:hover {
+  transform: scale(1.05);
 }
 
 .info {
   display: flex;
   gap: 10px;
+  justify-content: center;
+
+  letter-spacing: -0.01em;
+  font-size: 10;
+  color: #021915;
 }
-.info-item {
-  font-size: 12;
-}
+
 .gallery_link {
-  width: calc((100% - 15px * 3) / 4);
+  height: 250px;
+  width: calc((100% - 10px * 3) / 4);
 }
 
 .img-card {
   display: block;
   object-fit: cover;
+  margin-bottom: 10px;
   width: 100%;
-  border-radius: 5px;
+  border-radius: 4px 4px 0 0;
 }
 
 .is-hidden {
