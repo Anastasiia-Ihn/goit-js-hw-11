@@ -71,6 +71,7 @@ tuiPagination.classList.add('is-hidden')// вкл пагінацію
 function renderEvt(currPage, valueInput) {
   fetchCards(currPage, valueInput).then((data) => {
     creatMarkupInList(data.data.hits);
+    window.scrollTo({ top: 0, behavior: 'smooth' }); //для прогортування сторінки наверх
     console.log(currPage);
     if (data.data.hits.length <=perPage) {
       Notiflix.Notify.success("We're sorry, but you've reached the end of search results.");

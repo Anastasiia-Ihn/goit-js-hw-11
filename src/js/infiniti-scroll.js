@@ -1,6 +1,6 @@
 import {createMarkupInList} from './createMarkup'
 // import axios from "axios";
-import {fetchCards} from './load-more/fetchAPI-LMore'
+import fetchCards from './load-more/fetchAPI-LMore'
 import Notiflix from 'notiflix';
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
