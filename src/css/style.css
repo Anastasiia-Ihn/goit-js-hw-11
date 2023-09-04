@@ -36,18 +36,18 @@
 
 .search-form {
   padding: 15px;
-  border-radius: 2px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
 }
 
 .fixed-form {
-  z-index: 1000;
-  background-color: #11ac90;
-  justify-content: space-between;
   display: flex;
   position: fixed;
   top: 0;
   width: 1158px;
+  z-index: 1000;
+  background-color: #11ac90;
+  justify-content: space-between;
+  border-radius: 2px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
 }
 
 .input {
