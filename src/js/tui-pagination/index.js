@@ -13,6 +13,7 @@ const gallery = document.querySelector('.gallery')
 const tuiPagination = document.querySelector('.tui-pagination')
 let valueInput = '';
 let lightbox = new SimpleLightbox('.gallery a');
+const perPage = 40;
 
 tuiPagination.classList.add('is-hidden')// ховаємо пагінацію
 
@@ -43,7 +44,7 @@ async function fetchCards(currPage, valueInput) {
     orientation: 'horizontal',
     safesearch: true,
     page: currPage,
-    per_page: 40,
+    per_page: perPage,
       });
  return await axios.get(`${BASE_URL}?${params}`)
     .then((resp) => { return resp })
@@ -70,7 +71,8 @@ tuiPagination.classList.add('is-hidden')// вкл пагінацію
 function renderEvt(currPage, valueInput) {
   fetchCards(currPage, valueInput).then((data) => {
     creatMarkupInList(data.data.hits);
-    if (data.data.totalHits <= gallery.children.length) {
+    console.log(currPage);
+    if (data.data.hits.length <=perPage) {
       Notiflix.Notify.success("We're sorry, but you've reached the end of search results.");
     }
   })
