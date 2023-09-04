@@ -1,5 +1,5 @@
 import axios from "axios";
-import { perPage } from './load_more';
+import { perPage } from './infiniti-scroll';
 
 const BASE_URL = 'https://pixabay.com/api/';
 

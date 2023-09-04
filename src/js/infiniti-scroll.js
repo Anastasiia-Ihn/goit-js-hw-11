@@ -1,12 +1,10 @@
 import {createMarkupInList} from './createMarkup'
 // import axios from "axios";
-import fetchCards from './load-more/fetchAPI-LMore'
+import fetchCards from './fetchAPI-infinitiScroll'
 import Notiflix from 'notiflix';
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
 import '../css/style.css'
-
-const BASE_URL = 'https://pixabay.com/api/';
 
 const searchForm = document.querySelector('.search-form');
 const gallery = document.querySelector('.gallery');
