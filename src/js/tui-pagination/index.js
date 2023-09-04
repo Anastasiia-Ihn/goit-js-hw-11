@@ -1,11 +1,10 @@
 
 import axios from "axios";
-// import {fetchCards} from './fetchAPI'
 import Notiflix from 'notiflix';
 import { pagination } from './pagination';
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
-import './css/style.css'
+import '../../css/style.css'
 
 const BASE_URL = 'https://pixabay.com/api/'
 const currPage = pagination.getCurrentPage();
@@ -22,8 +21,15 @@ searchForm.addEventListener('submit', handlerClickOnForm);
 
 function handlerClickOnForm(evt) {
     evt.preventDefault();//відміна перезагруж сторінки
-    // gallery.innerHTML=''; // зачистка при новому пошуку
+    gallery.innerHTML=''; // зачистка при новому пошуку
   valueInput = evt.target.elements[0].value; // те що ввів клієнт
+
+  if ((valueInput === '') || (valueInput === ' ')) {
+    
+    gallery.innerHTML = '';
+    tuiPagination.classList.add('is-hidden')
+    return Notiflix.Notify.warning(`Sorry, you must enter a value.`);
+  }
   renderFirstPage(currPage, valueInput); //  запит на API
   lightbox.refresh();
 }
@@ -46,6 +52,7 @@ async function fetchCards(currPage, valueInput) {
 
 //ств запиту на основі ф-ї fetchCards
 function renderFirstPage(currPage, valueInput) {
+  
   fetchCards(currPage, valueInput).then((data) => {
     if (data.data.totalHits >= 1) {
       Notiflix.Notify.success(`Hooray! We found ${data.data.totalHits} images.`);
