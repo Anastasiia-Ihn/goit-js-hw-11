@@ -6,8 +6,6 @@ import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
 import '../../css/style.css'
 
-const BASE_URL = 'https://pixabay.com/api/'
-
 const searchForm = document.querySelector('.search-form')
 const gallery = document.querySelector('.gallery')
 const loadMore = document.querySelector('.load-more')
@@ -71,17 +69,15 @@ loadMore.addEventListener("click", handlerLoadMore);
      currPage += 1;
      fetchCards(currPage, valueInput).then((dataResp) => {
 
-       console.log(currPage);
-       console.log(dataResp);//нові елементи ? але приходять повторно перші 40
-       console.log(dataResp.data.hits.length);//довжина нових елементів
-       if (dataResp.data.hits.length) {
+         if (dataResp.data.hits.length) {
          const markup = createMarkupInList(dataResp.data.hits);
          gallery.insertAdjacentHTML('beforeend', markup);
          lightbox.refresh();
             
          if (perPage > dataResp.data.hits.length) {
            moreElementsAvailable = false;
-           loadMore.classList.add('is-hidden')
+           loadMore.classList.add('is-hidden');
+           Notiflix.Notify.info("We're sorry, but you've reached the end of search results.")
          }
 
        }

@@ -4,8 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Page title</title>
-    <!-- <script type="module" src="./js/tui-pagination/index.js"></script> -->
-    <script type="module" src="./js/load-more/load_more.js"></script>
+    <script type="module" src="./js/infiniti-scroll.js"></script>
     <link rel="stylesheet" href="./css/style.css" />
   </head>
   <body>
@@ -19,7 +18,9 @@
             <a class="link" href="./load-more.html">Load-more</a>
           </li>
           <li class="item-links">
-            <a class="link" href="./infiniti-scroll.html">Infiniti-scroll</a>
+            <a class="link action-click" href="./infiniti-scroll.html"
+              >Infiniti-scroll</a
+            >
           </li>
         </ul>
 
@@ -35,16 +36,11 @@
         </form>
       </div>
 
-      <!-- <div class="gallery"> -->
-      <!-- Картки зображень -->
-      <!-- </div> -->
-      <!-- для файлу index.js -->
-      <!-- <div id="pagination" class="tui-pagination"></div> -->
-
-      <!-- для файлу load-more.js -->
-      <!-- <div class="load-more-container">
-        <button type="button" class="load-more">Load more</button>
-      </div> -->
+      <div class="gallery">
+        <!-- Картки зображень -->
+      </div>
+      <!-- Infinity scroll -->
+      <div class="js-guard"></div>
     </div>
   </body>
 </html>

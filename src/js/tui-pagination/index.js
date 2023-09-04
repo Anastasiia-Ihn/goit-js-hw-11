@@ -68,7 +68,12 @@ tuiPagination.classList.add('is-hidden')// вкл пагінацію
 
 // запит на api(ств інших строрінок)
 function renderEvt(currPage, valueInput) {
-  fetchCards(currPage, valueInput).then((data) => creatMarkupInList(data.data.hits))
+  fetchCards(currPage, valueInput).then((data) => {
+    creatMarkupInList(data.data.hits);
+    if (data.data.totalHits <= gallery.children.length) {
+      Notiflix.Notify.success("We're sorry, but you've reached the end of search results.");
+    }
+  })
   .catch ((_) => Notiflix.Notify.warning('Sorry, there are no images matching your search query. Please try again.'))
 }
 
