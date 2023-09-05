@@ -9,6 +9,8 @@ import '../css/style.css'
 const searchForm = document.querySelector('.search-form');
 const gallery = document.querySelector('.gallery');
 const guardEl = document.querySelector('.js-guard');
+const textEl = document.querySelector('.text');
+
 
 const perPage = 40;
 let currPage = 1;
@@ -33,6 +35,8 @@ function fetchData() {
       gallery.insertAdjacentHTML('beforeend', markup);
       lightbox.refresh();
         observer.observe(guardEl);
+    } else {
+      Notiflix.Notify.warning('Sorry, there are no images matching your search query. Please try again.')
     }
   })
     .catch((_) => Notiflix.Notify.warning('Sorry, there are no images matching your search query. Please try again.'))
@@ -63,8 +67,9 @@ function handlerLoadMore(entries) {
       gallery.insertAdjacentHTML('beforeend', markup);
       lightbox.refresh();
 
-                if (dataResp.data.totalHits <= gallery.children.length) {
-            Notiflix.Notify.info("We're sorry, but you've reached the end of search results.")
+              if (dataResp.data.totalHits === gallery.children.length) {
+                          textEl.classList.replace('is-hidden', 'no-hidden');
+
             observer.unobserve(guardEl);
                 };
   })

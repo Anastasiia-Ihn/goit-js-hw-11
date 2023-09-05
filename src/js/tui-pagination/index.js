@@ -11,6 +11,7 @@ const currPage = pagination.getCurrentPage();
 const searchForm = document.querySelector('.search-form')
 const gallery = document.querySelector('.gallery')
 const tuiPagination = document.querySelector('.tui-pagination')
+const textEl = document.querySelector('.text')
 let valueInput = '';
 let lightbox = new SimpleLightbox('.gallery a');
 const perPage = 40;
@@ -22,7 +23,8 @@ searchForm.addEventListener('submit', handlerClickOnForm);
 
 function handlerClickOnForm(evt) {
     evt.preventDefault();//відміна перезагруж сторінки
-    gallery.innerHTML=''; // зачистка при новому пошуку
+  gallery.innerHTML = ''; // зачистка при новому пошуку
+  textEl.classList.replace('no-hidden','is-hidden')
   valueInput = evt.target.elements[0].value; // те що ввів клієнт
 
   if ((valueInput === '') || (valueInput === ' ')) {
@@ -55,14 +57,22 @@ async function fetchCards(currPage, valueInput) {
 function renderFirstPage(currPage, valueInput) {
   
   fetchCards(currPage, valueInput).then((data) => {
+    
     if (data.data.totalHits >= 1) {
+      
       Notiflix.Notify.success(`Hooray! We found ${data.data.totalHits} images.`);
     tuiPagination.classList.remove('is-hidden')// вкл пагінацію
     } else {
-tuiPagination.classList.add('is-hidden')// вкл пагінацію
-      Notiflix.Notify.warning('Sorry, there are no images matching your search query. Please try again.')
+     tuiPagination.classList.add('is-hidden')// викл пагінацію
+      // Notiflix.Notify.warning('Sorry, there are no images matching your search query. Please try again.')
+    if (textEl.classList.includes('no-hidden')){
+        textEl.classList.replace('no-hidden', 'is-hidden')
+      }
     }
     creatMarkupInList(data.data.hits);// відмальовка списку даних з запиту
+    if (data.data.hits.length < perPage) {
+      textEl.classList.replace('is-hidden', 'no-hidden')
+    } 
     pagination.reset(data.data.totalHits); // підключення пагінації(к-сть сторінок)
   }).catch((_) => Notiflix.Notify.warning('Sorry, there are no images matching your search query. Please try again.'))
 }
@@ -72,10 +82,10 @@ function renderEvt(currPage, valueInput) {
   fetchCards(currPage, valueInput).then((data) => {
     creatMarkupInList(data.data.hits);
     window.scrollTo({ top: 0, behavior: 'smooth' }); //для прогортування сторінки наверх
-    console.log(currPage);
-    if (data.data.hits.length <=perPage) {
-      Notiflix.Notify.success("We're sorry, but you've reached the end of search results.");
-    }
+   
+    if (data.data.hits.length < perPage) {
+      textEl.classList.replace('is-hidden', 'no-hidden')
+    } 
   })
   .catch ((_) => Notiflix.Notify.warning('Sorry, there are no images matching your search query. Please try again.'))
 }
