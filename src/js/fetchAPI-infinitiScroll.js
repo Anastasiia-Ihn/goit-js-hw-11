@@ -4,7 +4,7 @@ import { perPage } from './infiniti-scroll';
 const BASE_URL = 'https://pixabay.com/api/';
 
 //ств запиту на api
-export async function fetchCards(page, valueInput) {
+export async function fetchCardsAll(page, valueInput) {
 
    const params = new URLSearchParams({
     key: '39154877-9df82b17a56e0efc5c16aca53',

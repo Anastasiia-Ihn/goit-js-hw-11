@@ -1,6 +1,6 @@
 import {createMarkupInList} from './createMarkup'
 // import axios from "axios";
-import fetchCards from './fetchAPI-infinitiScroll'
+import {fetchCardsAll} from './fetchAPI-infinitiScroll'
 import Notiflix from 'notiflix';
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
@@ -12,12 +12,12 @@ const guardEl = document.querySelector('.js-guard');
 
 const perPage = 40;
 let currPage = 1;
-export {perPage,currPage}
+export {perPage}
 let valueInput = '';
 let lightbox = new SimpleLightbox('.gallery a');
 
 const options = {
-  rootMargin: "500px",
+  rootMargin: "800px",
 };
 const observer = new IntersectionObserver(handlerLoadMore, options);
 
@@ -25,7 +25,7 @@ const observer = new IntersectionObserver(handlerLoadMore, options);
 searchForm.addEventListener('submit', handlerClickOnForm);
 
 function fetchData() {
-  fetchCards(currPage, valueInput).then((dataResp) => {
+  fetchCardsAll(currPage, valueInput).then((dataResp) => {
 
     if (dataResp.data.totalHits >= 1) {
       Notiflix.Notify.success(`Hooray! We found ${dataResp.data.totalHits} images.`);
@@ -57,7 +57,7 @@ function handlerLoadMore(entries) {
         if (entry.isIntersecting) {
             currPage += 1;
           
-            fetchCards(currPage, valueInput).then((dataResp) => {
+            fetchCardsAll(currPage, valueInput).then((dataResp) => {
 
        const markup = createMarkupInList(dataResp.data.hits);
       gallery.insertAdjacentHTML('beforeend', markup);
