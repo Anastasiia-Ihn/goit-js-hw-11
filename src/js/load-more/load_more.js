@@ -8,7 +8,7 @@ import '../../css/style.css'
 
 const searchForm = document.querySelector('.search-form')
 const gallery = document.querySelector('.gallery')
-const loadMore = document.querySelector('.load-more')
+const loadMore = document.getElementById('#btn-load-more')
 
 const perPage = 40;
 let currPage = 1;
@@ -17,8 +17,8 @@ let valueInput = '';
 let lightbox = new SimpleLightbox('.gallery a');
 // Оголосіть змінну, яка вказує, чи є ще елементи для завантаження.
 let moreElementsAvailable = true;
-
-loadMore.classList.add('is-hidden')
+console.log(loadMore);
+// loadMore.classList.add('is-hidden')
 
 // слухач подій на запит по слову
 searchForm.addEventListener('submit', handlerClickOnForm);
@@ -33,7 +33,7 @@ function handlerClickOnForm(evt) {
     if ((valueInput === '') || (valueInput === ' ')) {
     
     gallery.innerHTML = '';
-    loadMore.classList.add('is-hidden')
+    // loadMore.classList.add('is-hidden')
     return Notiflix.Notify.warning(`Sorry, you must enter a value.`);
   }
   
@@ -50,10 +50,10 @@ function fetchData() {
       gallery.insertAdjacentHTML('beforeend', markup);
       lightbox.refresh();
 
-      loadMore.classList.remove('is-hidden')
+      loadMore.classList.replace('is-hidden', 'no-hidden')
 
       if (dataResp.data.totalHits <= perPage) {
-        loadMore.classList.add('is-hidden')
+        loadMore.classList.replace('is-hidden', 'no-hidden')
       }
       } else {
       Notiflix.Notify.warning('Sorry, there are no images matching your search query. Please try again.')
@@ -76,7 +76,7 @@ loadMore.addEventListener("click", handlerLoadMore);
             
          if (perPage > dataResp.data.hits.length) {
            moreElementsAvailable = false;
-           loadMore.classList.add('is-hidden');
+           loadMore.classList.replace('is-hidden', 'no-hidden');
            Notiflix.Notify.info("We're sorry, but you've reached the end of search results.")
          }
 

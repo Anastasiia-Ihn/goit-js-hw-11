@@ -119,6 +119,10 @@ a:hover {
   display: none;
 }
 
+.no-hidden {
+  display: block;
+}
+
 .load-more-container {
   display: flex;
   justify-content: center;
