@@ -8,7 +8,7 @@ import '../../css/style.css'
 
 const searchForm = document.querySelector('.search-form')
 const gallery = document.querySelector('.gallery')
-const loadMore = document.getElementById('#btn-load-more')
+const loadMore = document.querySelector('.load-more')
 
 const perPage = 40;
 let currPage = 1;
