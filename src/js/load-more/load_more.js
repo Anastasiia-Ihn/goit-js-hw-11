@@ -84,14 +84,12 @@ loadMore.addEventListener("click", handlerLoadMore);
          const markup = createMarkupInList(dataResp.data.hits);
          gallery.insertAdjacentHTML('beforeend', markup);
            lightbox.refresh();
-           if (dataResp.data.hits.length < perPage) {
-      textEl.classList.replace('is-hidden', 'no-hidden')
-           };
-            
+                      
          if (perPage > dataResp.data.hits.length) {
            moreElementsAvailable = false;
            loadMore.classList.replace('no-hidden', 'is-hidden');
-      // textEl.classList.replace('is-hidden', 'no-hidden')
+                 textEl.classList.replace('is-hidden', 'no-hidden')
+
          }
 
        }

@@ -60,7 +60,8 @@ function handlerLoadMore(entries) {
     entries.forEach((entry) => { 
         if (entry.isIntersecting) {
             currPage += 1;
-          
+               textEl.classList.replace('no-hidden', 'is-hidden');
+
             fetchCardsAll(currPage, valueInput).then((dataResp) => {
 
        const markup = createMarkupInList(dataResp.data.hits);
